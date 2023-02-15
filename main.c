@@ -3,7 +3,8 @@
 /**
  * main - entry point
  * @argc: arg count
- * @*argv: arg pointer
+ * @argv: arguement  pointer
+ * @param *argv Pointer to an array of command line arguments
  *
  * Return: 0 on success, 1 on error
  */
@@ -14,31 +15,27 @@ int main(int argc, char *argv[])
 
 	if (argc > 2)
 	{
-        	printf("Error: too many arguments\n");
-        	return 1;
+	printf("Error: too many arguments\n");
+	return (1);
 	}
 
 	else if (argc == 2)
 	{
-        	return execute_file(argv[1]);
+	return (execute_file(argv[1]));
 	}
 
-/*Main loop*/
-
+	/*Main loop*/
 	char *command_line;
-    	char **args;
-    	int status;
+	char **args;
+	int status;
 
-    	do
-    	{
-        	print_prompt();
-        	command_line = getline();
-        	args = parse_command_line(command_line);
-        	status = execute_command(args);
-
-        	free(command_line);
-        	free(args);
-    	} 	while (status);
-
-    	return 0;
+	do {
+		print_prompt();
+		command_line = getline();
+		args = parse_command_line(command_line);
+		status = execute_command(args);
+		free(command_line);
+		free(args);
+	} while (status);
+	return (0);
 }

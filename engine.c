@@ -6,14 +6,14 @@
  * Return: 0 on success, 1 on error
  */
 
-int execute_command(char** args)
+int execute_command(char **args)
 {
 	int status;
 
 	if (args[0] == NULL)
 	{
 	/* An empty command was entered.*/
-	return 1;
+	return (1);
 	}
 
 	if (strcmp(args[0], "cd") == 0)
@@ -61,5 +61,6 @@ int execute_command(char** args)
 			}
 		}
 
-return status;
+return (status);
+}
 }
