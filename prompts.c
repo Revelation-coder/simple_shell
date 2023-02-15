@@ -23,7 +23,7 @@ void print_prompt()
 		}
 }
 
-char* getline()
+char* mygetline()
 {
 	char *command_line = malloc(sizeof(char) * MAX_BUFFER_LENGTH);
 	int i;
@@ -34,7 +34,7 @@ char* getline()
 for (i = 0; i < MAX_BUFFER_LENGTH - 1; i++)
 	{
 		c = getchar();
-		[i] = c;
+		command_line[i] = c;
 
 		if (c == EOF || c == '\n')
 		{

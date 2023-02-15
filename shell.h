@@ -22,7 +22,7 @@ int execute_unsetenv(char **args);
 int execute_alias(char **args);
 int execute_file(char *filename);
 void print_prompt(void);
-char *getline();
+char *mygetline();
 char **parse_command_line(char *command_line);
 
 #endif

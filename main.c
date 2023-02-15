@@ -11,6 +11,10 @@
 
 int main(int argc, char *argv[])
 {
+	char *command_line;
+	char **args;
+	int status;
+
 	/* Check if a filename was passed as an argument*/
 
 	if (argc > 2)
@@ -24,14 +28,10 @@ int main(int argc, char *argv[])
 	return (execute_file(argv[1]));
 	}
 
-	/*Main loop*/
-	char *command_line;
-	char **args;
-	int status;
 
 	do {
 		print_prompt();
-		command_line = getline();
+		command_line = mygetline();
 		args = parse_command_line(command_line);
 		status = execute_command(args);
 		free(command_line);

@@ -62,9 +62,11 @@ int execute_alias(char** args)
 {
     if (args[1] == NULL)
     {
-        // Print all aliases
+        /* Print all aliases*/
         char *name, *value;
-        for (int i = 0; environ[i] != NULL; i++)
+	int i;
+
+        for (i = 0; environ[i] != NULL; i++)
         {
             name = strtok(environ[i], "=");
             value = strtok(NULL, "=");
@@ -73,11 +75,12 @@ int execute_alias(char** args)
     }
     else if (args[2] == NULL)
     {
-        // Print the given aliases
-        for (int i = 1; args[i] != NULL; i++)
+        /* Print the given aliases*/
+        for (i = 1; args[i] != NULL; i++)
         {
             char *name, *value;
-            for (int j = 0; environ[j] != NULL; j++)
+	    int j;
+            for (j = 0; environ[j] != NULL; j++)
             {
                 name = strtok(environ[j], "=");
                 value = strtok(NULL, "=");
@@ -91,8 +94,10 @@ int execute_alias(char** args)
     }
     else
     {
-        // Set the given aliases
-        for (int i = 1; args[i] != NULL; i += 2)
+        /* Set the given aliases*/
+	int i;
+
+        for (i = 1; args[i] != NULL; i += 2)
         {
             if (args[i + 1] == NULL)
             {
@@ -114,7 +119,7 @@ int execute_file(char *filename)
     char **args;
     FILE *file;
 
-    // Open the file
+    /* Open the file*/
     file = fopen(filename, "r");
     if (file == NULL)
     {
@@ -122,7 +127,7 @@ int execute_file(char *filename)
         return 1;
     }
 
-    // Read the file line by line
+    /* Read the file line by line*/
     while (1)
     {
         command_line = getline();
@@ -140,7 +145,7 @@ int execute_file(char *filename)
         free(args);
     }
 
-    // Close the file
+    /* Close the file*/
     fclose(file);
 
     return status;
