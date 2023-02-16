@@ -9,10 +9,10 @@
  */
 void exit_sh(sev_t *sev)
 {
-  char **av = sev->p_input;
-  char *signal = "0";
-  unsigned long siglong = 0, i, max = (long) INT_MAX;
-  int sgint;
+	char **av = sev->p_input;
+	char *signal = "0";
+	unsigned long siglong = 0, i, max = (long) INT_MAX;
+	int sgint;
 
   if (av[1])
     signal = av[1];

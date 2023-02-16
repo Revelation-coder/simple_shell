@@ -42,7 +42,8 @@ unsigned int _strlen(char *s);
 
 /*linkedlist.c  */
 /**
- * struct list_s - sing linked list
+ * struct list_s - singly linked list
+ * @struct list_s: - singly linked list
  * @key: void * type p to the key
  * @value: void * type p to the value
  * @next: struct list_s ptr to the next node
@@ -51,9 +52,9 @@ unsigned int _strlen(char *s);
  */
 typedef struct list_s
 {
-  void *key;
-  void *value;
-  struct list_s *next;
+void *key;
+void *value;
+struct list_s *next;
 } list_t;
 
 list_t *add_node(list_t **head, void *key, void *value);
@@ -76,8 +77,8 @@ int get_log_count(sev_t *sev);
  */
 typedef struct builtin
 {
-  char *funcname;
-  void (*func)(sev_t *);
+char *funcname;
+void (*func)(sev_t *);
 } built_t;
 
 /* builtin1.c */
@@ -165,6 +166,8 @@ void checker_alias(sev_t *sev);
 
 /**
  * struct sev_s - shell env vars
+ * @struct sev_s: - shell env vars
+ * @ia_mode: - shell env vars
  * @skywalker: flag to continue or not continue with shell
  * @log: ptr to log link list for the current shell session
  * @log_cnt: num of log entries for the curent shell session
@@ -181,6 +184,7 @@ void checker_alias(sev_t *sev);
  * @alias: ptr to link list of all alias created by user
  * @cmd_q: ptr to the list of commands in the queue
  * @shell_d: current working dir
+ * @sev_t: set enviroment variable
  * @arg0: command executed to run shell
  * Description: Struct contain all shell env vars.
  * This one struct will be passed from func to func and contain
@@ -206,5 +210,5 @@ typedef struct sev_s
 	list_t *cmd_q;
 	char *shell_d;
 	char *arg0;
-}sev_t;
+} sev_t;
 #endif
