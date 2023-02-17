@@ -14,43 +14,43 @@ void exit_sh(sev_t *sev)
 	unsigned long siglong = 0, i, max = (long) INT_MAX;
 	int sgint;
 
-  if (av[1])
-    signal = av[1];
-
-  for (i = 0; signal[i]; i++)
-    {
-      if (signal[i] == '-' || (signal[i] < '0' || signal[i] > '9'))
+	if (av[1])
 	{
-	  siglong = -1;
-	  break;
+		signal = av[1];
 	}
-
-      siglong = (siglong * 10) + signal[i] - '0';
-      if (siglong > max)
+	for (i = 0; signal[i]; i++)
 	{
-	  siglong = -1;
-	  break;
+		if (signal[i] == '-' || (signal[i] < '0' || signal[i] > '9'))
+	{
+		siglong = -1;
+		break;
 	}
-    }
-
-  sgint = (int) siglong;
-  if (sgint >= 0 && sgint <= INT_MAX)
-    {
-      sigint &= BYTE;
-      sev->error = sgint;
-      if (!av[1])
+	siglong = (siglong * 10) + signal[i] - '0';
+	if (siglong > max)
+	{
+	siglong = -1;
+	break;
+	}
+	}
+	sgint = (int) siglong;
+	if (sgint >= 0 && sgint <= INT_MAX)
+	{
+	sigint &= BYTE;
+	sev->error = sgint;
+	}
+	if (!av[1])
+	{
 	sev->error = sev->olderror;
-      sev->skywalker = 0;
-    }
-  else
-    {
-      sigint = 2;
-      sev->error = sigint;
-      sev->errmsg = illegalnum(sev);
-      sev->skywalker = 1;
-    }
+	sev->skywalker = 0;
+	}
+	else
+	{
+	sigint = 2;
+	sev->error = sigint;
+	sev->errmsg = illegalnum(sev);
+	sev->skywalker = 1;
+	}
 }
-
 /**
  * _printenv - print env vars
  * @sev: struct contain shell vars
