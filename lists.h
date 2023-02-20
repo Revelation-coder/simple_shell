@@ -1,3 +1,7 @@
+#ifndef _LISTS_H_
+#define _LISTS_H_
+
+#include <stdlib.h>
 
 /*linkedlist.c  */
 /**
@@ -20,3 +24,4 @@ list_t *add_node(list_t **head, void *key, void *value);
 list_t *reverse_list(list_t **head);
 void free_list(list_t **head, int flag);
 int delete_node_at_index(list_t **head, unsigned int index);
+#endif
