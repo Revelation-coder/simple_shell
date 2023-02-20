@@ -9,14 +9,14 @@
  */
 char *helpfnotfound(sev_t *sev)
 {
-  char *errmsg = NULL;
-  char *msg = "-JS: help: no help topics match `";
+	char *errmsg = NULL;
+	char *msg = "-JS: help: no help topics match `";
 
-  errmsg = _strcat(msg, sev->p_input[1], &sev->mem);
-  errmsg = _strcat(errmsg, "'.  Try `help help'.\n", &sev->mem);
-  sev->errmsg = errmsg;
+	errmsg = _strcat(msg, sev->p_input[1], &sev->mem);
+	errmsg = _strcat(errmsg, "'.  Try `help help'.\n", &sev->mem);
+	sev->errmsg = errmsg;
 
-  return (errmsg);
+	return (errmsg);
 }
 
 /**
@@ -28,13 +28,13 @@ char *helpfnotfound(sev_t *sev)
  */
 char *illoptions(sev_t *sev)
 {
-  char *errmsg = NULL;
-  char chartoprint[2];
+	char *errmsg = NULL;
+	char chartoprint[2];
 
-  _chartostr(chartoprint, sev->p_input[1][1]);
+	_chartostr(chartoprint, sev->p_input[1][1]);
 
-  errmsg = _strcat(sev->arg0, COLON, &sev->mem);
-  errmsg = _strcat(errmsg, SPACE, &sev->mem);
+	errmsg = _strcat(sev->arg0, COLON, &sev->mem);
+	errmsg = _strcat(errmsg, SPACE, &sev->mem);
   errmsg = _strcat(errmsg, _itoa(sev->cmd_cnt, &sev->mem), &sev->mem);
   errmsg = _strcat(errmsg, COLON, &sev->mem);
   errmsg = _strcat(errmsg, SPACE, &sev->mem);
