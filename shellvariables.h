@@ -26,8 +26,7 @@
  * This one struct will be passed from func to func and contain
  * all the shell env vars for the current session.
  */
-typedef struct sev_s
-{
+typedef struct sev_s {
 	int skywalker;
 	int ia_mode;
 	list_t *log;
@@ -46,7 +45,6 @@ typedef struct sev_s
 	list_t *cmd_q;
 	char *shell_d;
 	char *arg0;
-	
-sev_t;
+}sev_t;
 #endif /* _SHELLVARIABLES_H_ */
 
