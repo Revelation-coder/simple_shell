@@ -88,8 +88,7 @@ char *invalenv(sev_t *sev);
 
 /* memory.c */
 void reset_buffer(char *buffer, ssize_t buf_size);
-void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size,
-	       list_t **mt);
+void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size,list_t **mt);
 
 
 /* string1.c */
