@@ -46,7 +46,6 @@ typedef struct sev_s
 	list_t *cmd_q;
 	char *shell_d;
 	char *arg0;
-
-	sev_t;
+}sev_t;
 #endif /* _SHELLVARIABLES_H_ */
 
