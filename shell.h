@@ -13,6 +13,8 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <unistd.h>
+#include "lists.h"
+#include "shellvariables.h"
 
 #define SPACE " "
 #define EQUAL "="
