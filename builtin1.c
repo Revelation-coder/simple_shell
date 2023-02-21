@@ -1,207 +1,115 @@
 #include "shell.h"
-#include "shellvariables.h"
-#include "lists.h"
-#include <limits.h>
 
 /**
- * exit_sh - exit shell
- * @sev: struct contain shell vars
- *
- * Description: Func to exit
- * Return: void
+ * _myhistory - displays the history list, one command by line, preceded
+ *              with line numbers, starting at 0.
+ * @info: Structure containing potential arguments. Used to maintain
+ *        constant function prototype.
+ *  Return: Always 0
  */
-void exit_sh(sev_t *sev)
+int _myhistory(info_t *info)
 {
-	char **av = sev->p_input;
-	char *signal = "0";
-	unsigned long siglong = 0, i, max = (long) INT_MAX;
-	int sgint;
-
-	if (av[1])
-	signal = av[1];
-	for (i = 0; signal[i]; i++)
-	{
-		if (signal[i] == '-' || (signal[i] < '0' || signal[i] > '9'))
-	{
-		siglong = -1;
-		break;
-	}
-	siglong = (siglong * 10) + signal[i] - '0';
-	if (siglong > max)
-	{
-	siglong = -1;
-	break;
-	}
-	}
-	sgint = (int) siglong;
-	if (sgint >= 0 && sgint <= INT_MAX)
-	{
-	sgint &= BYTE;
-	sev->error = sgint;
-	}
-	if (!av[1])
-	{
-	sev->error = sev->olderror;
-	sev->skywalker = 0;
-	}
-	else
-	{
-	sgint = 2;
-	sev->error = sigint;
-	sev->errmsg = illegalnum(sev);
-	sev->skywalker = 1;
-	}
-}
-/**
- * _printenv - print env vars
- * @sev: struct contain shell vars
- *
- * Description: Func prints all env vars
- * Return: void
- */
-void _printenv(sev_t *sev)
-{
-	list_t *ev = reverse_list(&(sev->env));
-	char *st = NULL;
-
-	if (sev->p_input[1] != NULL)
-	{
-	sev->errmsg = invalidenv(sev);
-	sev->error = 127;
-	reverse_list(&(sev->env));
-	return;
-	}
-	if (ev)
-	{
-	for (; ev; ev = ev->next)
-	{
-	st = ev->value;
-	write(STDOUT_FILENO, st, _strlen(st));
-	write(STDOUT_FILENO, "\n", 1);
-	}
-	}
-	reverse_list(&(sev->env));
+	print_list(info->history);
+	return (0);
 }
 
 /**
- * _setenv - set environment variable
- * @sev: struct of shell variable
+ * unset_alias - sets alias to string
+ * @info: parameter struct
+ * @str: the string alias
  *
- * Description: Function checks to see if environment variable exists. If
- * exists, the value will be overwritten with new value passed in by user. If
- * it does not exist, a new variable will be created.
- * Return: void
+ * Return: Always 0 on success, 1 on error
  */
-void _setenv(sev_t *sev)
+int unset_alias(info_t *info, char *str)
 {
-	list_t **mt = &(sev->mem);
-	char **av = sev->p_input;
-	char *variabl, *value, *new;
+	char *p, c;
+	int ret;
 
-	variabl = av[1];
-	value = av[2];
-
-	if (variabl && value)
-	{
-	new = _strcat(variabl, "=", mt);
-	new = _strcat(new, value, mt);
-
-	if (!_setenv_helper(sev, variabl, value))
-	add_node(&(sev->env), NULL, _strdup(new, mt));
-	}
-	else
-	{
-	sev->errmsg = "Usage: setenv VARIABLE VALUE\n";
-	sev->error = 1;
-	}
+	p = _strchr(str, '=');
+	if (!p)
+		return (1);
+	c = *p;
+	*p = 0;
+	ret = delete_node_at_index(&(info->alias),
+		get_node_index(info->alias, node_starts_with(info->alias, str, -1)));
+	*p = c;
+	return (ret);
 }
 
 /**
- * _unsetenv - rmv env var
- * @sev: struct of shell vars
+ * set_alias - sets alias to string
+ * @info: parameter struct
+ * @str: the string alias
  *
- * Description: Func checks to see if env var exists. If it
- * exists, it will be rmv from the list of env vars.
- * Return: void
+ * Return: Always 0 on success, 1 on error
  */
-void _unsetenv(sev_t *sev)
+int set_alias(info_t *info, char *str)
 {
-	list_t *ev = sev->env;
-	unsigned int i = 0, index_count = 0, found = 0;
-	char **av = sev->p_input;
-	char *variabl, *envar;
+	char *p;
 
-	variabl = av[1];
+	p = _strchr(str, '=');
+	if (!p)
+		return (1);
+	if (!*++p)
+		return (unset_alias(info, str));
 
-	if (variabl)
-	{
-	for (; ev; ev = ev->next)
-	{
-	envar = ev->value;
-	for (i = 0; i < _strlen(variabl); i++)
-		{
-		if (variabl[i] != envar[i])
-			break;
-		}
-	if (!variabl[i])
-		{
-		found = 1;
-		break;
-		}
-	index_count++;
-	}
-	if (found)
-	delete_node_at_index(&(sev->env), index_count);
-	else
-	{
-	sev->errmsg = "Unable to find VARIABLE\n";
-	sev->error = 1;
-	}
-	}
-	else
-	{
-	sev->errmsg = "Usage: unsetenv VARIABLE\n";
-	sev->error = 1;
-	}
+	unset_alias(info, str);
+	return (add_node_end(&(info->alias), str, 0) == NULL);
 }
 
 /**
- * check_builtin - call builtin func
- * @sev: struct contain shell vars
+ * print_alias - prints an alias string
+ * @node: the alias node
  *
- * Description: Func checks if builtin func exists. If it does,
- * builtin func will be exec.
- * Return: 1 in success; 0 in fail
+ * Return: Always 0 on success, 1 on error
  */
-int check_builtin(sev_t *sev)
+int print_alias(list_t *node)
+{
+	char *p = NULL, *a = NULL;
+
+	if (node)
+	{
+		p = _strchr(node->str, '=');
+		for (a = node->str; a <= p; a++)
+			_putchar(*a);
+		_putchar('\'');
+		_puts(p + 1);
+		_puts("'\n");
+		return (0);
+	}
+	return (1);
+}
+
+/**
+ * _myalias - mimics the alias builtin (man alias)
+ * @info: Structure containing potential arguments. Used to maintain
+ *          constant function prototype.
+ *  Return: Always 0
+ */
+int _myalias(info_t *info)
 {
 	int i = 0;
-	char *cmd = NULL;
-	char **av = sev->p_input;
+	char *p = NULL;
+	list_t *node = NULL;
 
-	built_t funclist[] = {
-		{"exit", exit_sh},
-		{"env", _printenv},
-		{"setenv", _setenv},
-		{"unsetenv", _unsetenv},
-		{"cd", change_dir},
-		{"history", history},
-		{"alias", alias},
-		{"help", _help},
-		{NULL, NULL}
-	};
+	if (info->argc == 1)
+	{
+		node = info->alias;
+		while (node)
+		{
+			print_alias(node);
+			node = node->next;
+		}
+		return (0);
+	}
+	for (i = 1; info->argv[i]; i++)
+	{
+		p = _strchr(info->argv[i], '=');
+		if (p)
+			set_alias(info, info->argv[i]);
+		else
+			print_alias(node_starts_with(info->alias, info->argv[i], '='));
+	}
 
-	if (av && *av)
-	{
-	cmd = av[0];
-	for (i = 0; funclist[i].funcname; i++)
-	{
-	if (!_strcmp(cmd, funclist[i].funcname))
-	{
-		funclist[i].func(sev);
-		return (1);
-	}
-	}
-	}
 	return (0);
 }
