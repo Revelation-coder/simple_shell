@@ -13,8 +13,6 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <unistd.h>
-#include "lists.h"
-#include "shellvariables.h"
 
 #define SPACE " "
 #define EQUAL "="
@@ -30,6 +28,9 @@
 #define MAXLOGSIZE 4096
 #define MAXBUFREAD 1024
 #define MAXNUMLEN 1024
+#define BYTE 255
+#define BUF_SIZE 4096
+
 
 
 /* mygetline.c */
@@ -41,6 +42,29 @@ unsigned int _strspn(char *s, char *accept);
 char *_strpbrk(char *s, char *accept);
 char *_strtok(char *s, const char *delim);
 unsigned int _strlen(char *s);
+
+/*linkedlist.c  */
+/**
+ * struct list_s - singly linked list
+ * @struct list_s: - singly linked list
+ * @key: void * type p to the key
+ * @value: void * type p to the value
+ * @next: struct list_s ptr to the next node
+ *
+ * Description: sing linked list used in shell project
+ */
+typedef struct list_s
+{
+void *key;
+void *value;
+struct list_s *next;
+} list_t;
+
+list_t *add_node(list_t **head, void *key, void *value);
+list_t *reverse_list(list_t **head);
+void free_list(list_t **head, int flag);
+int delete_node_at_index(list_t **head, unsigned int index);
+
 
 /* log.c */
 int add_log(sev_t *sev);
@@ -88,7 +112,8 @@ char *invalenv(sev_t *sev);
 
 /* memory.c */
 void reset_buffer(char *buffer, ssize_t buf_size);
-void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size,list_t **mt);
+void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size,
+	       list_t **mt);
 
 
 /* string1.c */
@@ -141,4 +166,52 @@ void process_inputs(char *cmd, sev_t *sev);
 void dis_banner(int ia_mode);
 void checker_alias(sev_t *sev);
 
+
+/**
+ * struct sev_s - shell env vars
+ * @struct sev_s: - shell env vars
+ * @ia_mode: - shell env vars
+ * @skywalker: flag to continue or not continue with shell
+ * @log: ptr to log link list for the current shell session
+ * @log_cnt: num of log entries for the curent shell session
+ * @cmd_cnt: cmd counter separate from log counter
+ * @mem: ptr to mem alloc for the current shell session
+ * @env: ptr to the os env vars
+ * @evp: ptr to env vars in arr
+ * @input: ptr to the user's input
+ * @p_input: ptr to the procssed input
+ * @error: error num from current command
+ * @errmsg: error mess associated with the error num
+ * @olderror: error from previous command
+ * @pid: pid of current shell
+ * @alias: ptr to link list of all alias created by user
+ * @cmd_q: ptr to the list of commands in the queue
+ * @shell_d: current working dir
+ * @sev_t: set enviroment variable
+ * @arg0: command executed to run shell
+ * Description: Struct contain all shell env vars.
+ * This one struct will be passed from func to func and contain
+ * all the shell env vars for the current session.
+ */
+typedef struct sev_s
+{
+	int skywalker;
+	int ia_mode;
+	list_t *log;
+	int log_cnt;
+	int cmd_cnt;
+	list_t *mem;
+	list_t *env;
+	char **evp;
+	char *input;
+	char **p_input;
+	int error;
+	char *errmsg;
+	int olderror;
+	pid_t pid;
+	list_t *alias;
+	list_t *cmd_q;
+	char *shell_d;
+	char *arg0;
+} sev_t;
 #endif
