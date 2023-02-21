@@ -1,4 +1,7 @@
 #include "shell.h"
+#include "shellvariables.h"
+#include "lists.h"
+#include <limits.h>
 
 /**
  * exit_sh - exit shell
@@ -33,7 +36,7 @@ void exit_sh(sev_t *sev)
 	sgint = (int) siglong;
 	if (sgint >= 0 && sgint <= INT_MAX)
 	{
-	sigint &= BYTE;
+	sgint &= BYTE;
 	sev->error = sgint;
 	}
 	if (!av[1])
@@ -43,7 +46,7 @@ void exit_sh(sev_t *sev)
 	}
 	else
 	{
-	sigint = 2;
+	sgint = 2;
 	sev->error = sigint;
 	sev->errmsg = illegalnum(sev);
 	sev->skywalker = 1;
