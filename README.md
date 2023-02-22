@@ -47,23 +47,27 @@ Brief description of every file in this repository. Subject to change.
 
 | AUTHORS                              | Text file containing the contributing authors                                       |
 | builtin1.c                           | Builtin commands source code #1 |
-| builtin2.c                           | Builtin commands source code #2 |
-| error01.c                            | Error message handling source code |
-| mygetline.c                          | Our script of "getline" |
-| linklist.c                           | Link lists source code |
-| log.c                                | Commands log handling source code |
-| manual_page                          | Manual page for our simple shell program |
+| builtin.c                            | Builtin commands source code #2 |
+| errors.c                             | Error message handling source code |
+| errors1.c                            | second error msg handli source code |
+| lists.c                              | Link lists source code |
+| lists1.c                             | linked lists functions source code |
+| simple_shell_manual_page             | Manual page for our simple shell program |
 | memory.c                             | Memory handling source code |
 | README.md                            | This file that you are reading |
 | main.c                               | Primary shell source code |
 | shell.h                              | Shell header file |
-| helper1.c                            | Helper functions used in our implementation of shell #1 |
-| helper2.c                            | Helper functions used in our implementation of shell #2 |
-| helper3.c                            | Helper functions used in our implementation of shell #3 |
-| helper4.c                            | Helper functions used in our implementation of shell #4 |
-| string1.c                            | String function source code #1 |
-| string2.c                            | String function source code #2 |
-| string3.c                            | String function source code #3 |
-
+| getinfo.c                            | Helper functions used in our implementation of shell #1 |
+| parser.c                             | Helper functions used in our implementation of shell #2 |
+| getenv.c                             | Get environment  functions used in our implementation of shell #3 |
+| history.c                            | History functions used in our implementation of shell #4 |
+| string.c                             | String function source code #1 |
+| string1.c                            | String function source code #2 |
+| realloc.c                            | Memory reallocation  function source code #3 |
+| tokenizer.c                          | tokenizer functions            |
+| vars.c                               | shell variables  
 
 ### Authors
+
+Revelation Mudoti<captainrevelation@gmail.com>
+Herbert Kabagambe<Khabertzion11@gmail.com>
